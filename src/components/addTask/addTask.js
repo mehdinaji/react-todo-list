@@ -1,6 +1,13 @@
 import React from 'react';
 import axios from 'axios';
 
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 class AddTask extends React.Component {
     state = {
         title: '',
@@ -24,17 +31,14 @@ render () {
         <div>
             <h3> ADD TASK </h3>
             <div>
-                <label>Title</label>
-                <input type="text" value={this.state.title} onChange={(event) => this.setState({ title: event.target.value })}/>
+                <TextField required id="outlined-required" label="Task" variant="outlined" label="Task" value={this.state.title} onChange={(event) => this.setState({ title: event.target.value })} />
 
-                <label>Status</label>
-                <select value={this.state.done}
-                    onChange={(event) => this.setState({ done: event.target.value })}>
-                    <option value="true">DONE</option>
-                    <option value="false">TO DO</option>
-                </select>
+                <RadioGroup aria-label="status" name="status" value={this.state.done} onChange={(event) => this.setState({ done: event.target.value })}>
+                    <FormControlLabel name="status" value="true"  control={<Radio />} label="DONE" />
+                    <FormControlLabel name="status" value="false" control={<Radio />} label="TO DO" />
+                </RadioGroup>
 
-                <button onClick={this.PostDataHandler}> ADD NEW TASK </button>
+                <Button variant="contained" color="secondary" onClick={this.PostDataHandler}> ADD NEW TASK </Button>
             </div>
         </div>
         )

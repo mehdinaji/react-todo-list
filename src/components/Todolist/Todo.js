@@ -7,7 +7,6 @@ class Todo extends React.Component {
     state = {
         tasks: [],
         error: '',
-
         id: '',
         oldTitle: '',
         oldState: false,
@@ -27,8 +26,12 @@ class Todo extends React.Component {
     deleteHandler(event, id) {
         axios.delete(`/tasks/${id}`)
         .then ((res) => {
-            console.log(res.data)
+            axios.get('/tasks')
+            .then((res) => {
+                this.setState({tasks: res.data})
+            })
         })
+        
         .catch((err) => {
             this.setState({error: 'ERROR DELETE'})
         })
@@ -50,13 +53,16 @@ class Todo extends React.Component {
         }
         axios.put(`/tasks/${this.state.id}`, data)
         .then((res) => {
-            console.log(res.data)
+            axios.get('/tasks')
+            .then((res) => {
+                this.setState({tasks: res.data})
+            })
         })
     }
     
     render () {
         const todolists = this.state.tasks.map ((item) => {
-            return <Task key={item.id} id={item.id} title={item.title} done={item.done ? 'true' : 'false'} 
+            return <Task key={item.id} id={item.id} title={item.title} done={item.done ? 'DONE' : 'TO DO'} 
                         delete={(event) => this.deleteHandler(event, item.id)}
                         edit={(event) => this.editHandler(event, item.id)}
                     />
@@ -88,7 +94,5 @@ class Todo extends React.Component {
         )
     }
 }
-
-
 
 export default Todo
